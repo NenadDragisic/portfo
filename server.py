@@ -1,7 +1,33 @@
 import os
-from flask import Flask, render_template, send_from_directory, url_for, request, redirect
+from flask import Flask, render_template, send_from_directory, request, redirect
+import Model
 
-app = Flask(__name__)
+
+def create_app(db):
+    app = Flask(__name__)
+    db.init_app(app)
+    return app
+
+
+if __name__ == 'server':
+    print('Entered app initialization!')
+    app = create_app(Model.db)
+
+username = os.environ.get('DB_USER')
+password = os.environ.get('DB_PASS')
+
+SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostname}/{databasename}".format(
+    username=username,
+    password=password,
+    hostname="NenadD.mysql.pythonanywhere-services.com",
+    databasename="NenadD$portfodb",
+)
+app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
+app.config["SQLALCHEMY_POOL_RECYCLE"] = 299
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+with app.app_context():
+    Model.db.create_all()
 
 
 @app.route('/')
