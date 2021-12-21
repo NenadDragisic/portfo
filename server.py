@@ -5,7 +5,9 @@ import Model
 
 def create_app(db):
     app = Flask(__name__)
+    print('Created flask app context.')
     db.init_app(app)
+    print('Initiated db using app context.')
     return app
 
 
@@ -13,22 +15,31 @@ if __name__ == 'server':
     print('Entered app initialization!')
     app = create_app(Model.db)
 
+print('Getting username and password.')
 username = os.environ.get('DB_USER')
 password = os.environ.get('DB_PASS')
+print('Username and password fetched.')
 
+print('Setting database connection string parameters.')
 SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostname}/{databasename}".format(
     username=username,
     password=password,
     hostname="NenadD.mysql.pythonanywhere-services.com",
     databasename="NenadD$portfodb",
 )
+print('Database connection string parameters configured.')
+
+print('Configuring app config.')
 app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
 app.config["SQLALCHEMY_POOL_RECYCLE"] = 299
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+print('App config configured.')
 
+print('Getting app context.')
 with app.app_context():
+    print('Creating database.')
     Model.db.create_all()
-
+print('Database created.')
 
 @app.route('/')
 def my_home():
