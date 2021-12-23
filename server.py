@@ -1,7 +1,7 @@
 import os
 from flask import Flask, render_template, send_from_directory, request, redirect
 import Model
-import email
+from Model import email
 
 
 def create_app(db):
