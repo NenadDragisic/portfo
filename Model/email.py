@@ -8,3 +8,8 @@ class Email(db.Model):
     email = db.Column(db.String(4096))
     subject = db.Column(db.String(4096))
     message = db.Column(db.String(4096))
+
+    def __init__(self, email, subject, message):
+        self.email = email
+        self.subject = subject
+        self.message = message

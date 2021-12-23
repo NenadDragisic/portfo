@@ -1,6 +1,7 @@
 import os
 from flask import Flask, render_template, send_from_directory, request, redirect
 import Model
+import email
 
 
 def create_app(db):
@@ -39,6 +40,7 @@ print('Getting app context.')
 with app.app_context():
     print('Creating database.')
     Model.db.create_all()
+    Model.db.session.commit()
 print('Database created.')
 
 @app.route('/')
