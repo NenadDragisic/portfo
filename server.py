@@ -17,8 +17,8 @@ if __name__ == 'server':
     app = create_app(Model.db)
 
 print('Getting username and password.')
-username = os.environ.get('DB_USER')
-password = os.environ.get('DB_PASS')
+username = os.getenv('DB_USER')
+password = os.getenv('DB_PASS')
 print('Username and password fetched.')
 
 print('Setting database connection string parameters.')
@@ -43,6 +43,7 @@ with app.app_context():
     Model.db.session.commit()
 print('Database created.')
 
+
 @app.route('/')
 def my_home():
     return render_template('index.html')
@@ -59,12 +60,14 @@ def login():
     error = None
     if request.method == 'POST':
         print(f"Email: {request.form['email']}")
-        email = request.form['email']
+        email_address = request.form['email']
         print(f"Content: {request.form['content']}")
         content = request.form['content']
         print(f"Subject: {request.form['subject']}")
         subject = request.form['subject']
-    print('yolo!')
+    mail = email.Email(email_address, subject, content)
+    Model.db.session.add(mail)
+    Model.db.session.commit()
     return redirect('/email_sent_notification')
 
 
