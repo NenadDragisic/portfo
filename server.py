@@ -87,4 +87,5 @@ def check_email():
     email3.id = 13
     emailTable = [email1, email2, email3]'''
     emailTable = Model.db.session.query(email.Email).all()
+    print(f"Num of results: {len(emailTable)}.")
     return render_template('check_emails.html', emailTable=emailTable)
