@@ -75,3 +75,16 @@ def login():
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'),
                                'favicon.ico')
+
+
+@app.route('/check_email')
+def check_email():
+    '''email1 = email.Email('a@b.com', 'subject', 'message1')
+    email1.id = 11
+    email2 = email.Email('c@d.com', 'subject1', 'message2')
+    email2.id = 12
+    email3 = email.Email('sad@asfa.com', 'afssaf', 'asfasfas')
+    email3.id = 13
+    emailTable = [email1, email2, email3]'''
+    emailTable = Model.db.session.query(email.Email).all()
+    return render_template('check_emails.html', emailTable=emailTable)
